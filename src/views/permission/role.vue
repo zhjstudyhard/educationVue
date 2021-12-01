@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-21 19:30:08
- * @LastEditTime: 2021-11-23 20:58:32
+ * @LastEditTime: 2021-12-01 21:39:28
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-element-admin-master\src\views\permission\userList.vue
@@ -67,13 +67,11 @@
             icon="el-icon-delete"
             >删除</el-button
           >
-          <el-button
-            type="warning"
-            size="small"
-            @click="handleDelete(scope.row.id)"
-            icon="el-icon-setting"
-            >分配权限</el-button
-          >
+          <router-link :to="'/permission/role/distribution/' + scope.row.id">
+            <el-button type="warning" size="small" icon="el-icon-setting"
+              >分配权限</el-button
+            >
+          </router-link>
         </template>
       </el-table-column>
     </el-table>

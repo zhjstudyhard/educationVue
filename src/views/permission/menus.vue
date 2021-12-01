@@ -2,18 +2,25 @@
   <div class="app-container">
     <el-input
       v-model="name"
-      placeholder="菜单名称"
-      style="margin-bottom: 30px"
+      placeholder="关键字输入"
+      style="width: 250px; margin-right: 20px"
     />
-
+    <!-- <el-button type="success" icon="el-icon-search" @click="fetchNodeList"
+      >搜索</el-button
+    > -->
+    <el-button type="warning" @click="resetData" icon="el-icon-refresh-left"
+      >重置</el-button
+    >
     <el-table
-      :data="menuList"
+      :data="treeTable"
       style="width: 100%; margin-bottom: 20px"
       row-key="id"
       border
       default-expand-all
+      :expand-row-keys="expandRow"
       :tree-props="{ children: 'children', hasChildren: 'hasChildren' }"
     >
+    <!-- default-expand-all -->
       <el-table-column prop="name" label="名称" sortable width="180">
       </el-table-column>
       <el-table-column prop="path" label="访问路径" sortable width="180">
@@ -148,6 +155,7 @@ export default {
     return {
       name: "",
       menuList: [],
+      expandRow: [],
       defaultProps: {
         children: "children",
         label: "name",
@@ -183,12 +191,62 @@ export default {
   //     this.$refs.menuTree.filter(val);
   //   },
   // },
-
+  computed: {
+    treeTable: function () {
+      var searchValue = this.name;
+      if (searchValue) {
+        let treeData = this.menuList;
+        let handleTreeData = this.handleTreeData(treeData, searchValue);
+        this.setExpandRow(handleTreeData);
+        this.expandRow = this.expandRow.join(",").split(",");
+        return handleTreeData;
+      }
+      return this.menuList;
+    },
+  },
   created() {
     this.fetchNodeList();
   },
 
   methods: {
+    //  树形表格过滤
+    handleTreeData(treeData, searchValue) {
+      if (!treeData || treeData.length === 0) {
+        return [];
+      }
+      const array = [];
+      for (let i = 0; i < treeData.length; i += 1) {
+        let match = false;
+        for (let pro in treeData[i]) {
+          if (typeof treeData[i][pro] == "string") {
+            match |= treeData[i][pro].includes(searchValue);
+            if (match) break;
+          }
+        }
+        if (
+          this.handleTreeData(treeData[i].children, searchValue).length > 0 ||
+          match
+        ) {
+          array.push({
+            ...treeData[i],
+            children: this.handleTreeData(treeData[i].children, searchValue),
+          });
+        }
+      }
+      return array;
+    },
+    // 将过滤好的树形数据展开
+    setExpandRow(handleTreeData) {
+      if (handleTreeData.length) {
+        for (let i of handleTreeData) {
+          this.expandRow.push(i.id);
+          if (i.children.length) {
+            this.setExpandRow(i.children);
+          }
+        }
+      }
+    },
+
     fetchNodeList() {
       let data = { name: this.name };
       menu.getPermissionTreeList(data).then((response) => {
@@ -216,7 +274,8 @@ export default {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning",
-      }).then(() => {
+      })
+        .then(() => {
           return menu.remove(data);
         })
         .then(() => {
@@ -364,7 +423,9 @@ export default {
       // this.menu = { ...menuForm };
       // this.permission = { ...perForm };
     },
-
+    resetData() {
+      this.name = "";
+    },
   },
 };
 </script>

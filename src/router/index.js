@@ -176,6 +176,14 @@ export const asyncRoutes = [
         }
       },
       {
+        path: 'role/distribution/:id',
+        component: () => import('@/views/permission/roleForm'),
+        name: '角色权限',
+        meta: {
+          title: '角色权限',
+        }
+      },
+      {
         path: 'menus',
         component: () => import('@/views/permission/menus'),
         name: '菜单管理',
