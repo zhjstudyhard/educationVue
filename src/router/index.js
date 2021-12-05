@@ -132,7 +132,7 @@ export const asyncRoutes = [
   {
     path: '/permission',
     component: Layout,
-    redirect: '/permission/page',
+    redirect: '/permission/menus',
     alwaysShow: true, // will always show the root menu
     name: '系统管理',
     meta: {
@@ -181,7 +181,8 @@ export const asyncRoutes = [
         name: '角色权限',
         meta: {
           title: '角色权限',
-        }
+        },
+        hidden:true
       },
       {
         path: 'menus',
@@ -415,7 +416,7 @@ export const asyncRoutes = [
   },
 
   // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true }
+  // { path: '*', redirect: '/404', hidden: true }
 ]
 
 const createRouter = () => new Router({

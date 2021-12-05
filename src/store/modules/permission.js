@@ -1,39 +1,42 @@
-import { asyncRoutes, constantRoutes } from '@/router'
-
-/**
- * Use meta.role to determine if the current user has permission
- * @param roles
- * @param route
+/*
+ * @Author: your name
+ * @Date: 2021-12-09 03:30:43
+ * @LastEditTime: 2021-12-11 16:21:07
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \vue-element-admin-master\src\store\modules\permission.js
  */
-function hasPermission(roles, route) {
-  if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.includes(role))
-  } else {
-    return true
+import {
+  constantRoutes
+} from '@/router'
+// import Layout from '@/views/layout/Layout'
+import menu from "@/api/system/menu";
+import Layout from '@/layout'
+function filterAsyncRouter(asyncRouterMap) { // 遍历后台传来的路由字符串，转换为组件对象
+  try {
+    const accessedRouters = asyncRouterMap.filter(route => {
+      if (route.component) {
+        if (route.component === "Layout") { // Layout组件特殊处理
+          route.component = Layout
+        } else {
+          const component = route.component
+          route.component = loadView(component)
+        }
+      }
+      if (route.children && route.children.length) {
+        route.children = filterAsyncRouter(route.children)
+      }
+      return true
+    })
+    return accessedRouters
+  } catch (e) {
+    console.log(e)
   }
 }
-
-/**
- * Filter asynchronous routing tables by recursion
- * @param routes asyncRoutes
- * @param roles
- */
-export function filterAsyncRoutes(routes, roles) {
-  const res = []
-
-  routes.forEach(route => {
-    const tmp = { ...route }
-    if (hasPermission(roles, tmp)) {
-      if (tmp.children) {
-        tmp.children = filterAsyncRoutes(tmp.children, roles)
-      }
-      res.push(tmp)
-    }
-  })
-
-  return res
+ // 路由懒加载
+export const loadView = (component) => { 
+  return resolve => {require(['@/views' + component + '.vue'], resolve)}
 }
-
 const state = {
   routes: [],
   addRoutes: []
@@ -47,14 +50,21 @@ const mutations = {
 }
 
 const actions = {
-  generateRoutes({ commit }, roles) {
+  async generateRoutes({
+    commit
+  }, roles) {
+    // 取后台路由
+
+    const asyncRouter = await menu.getMenu()
+
     return new Promise(resolve => {
-      let accessedRoutes
-      if (roles.includes('admin')) {
-        accessedRoutes = asyncRoutes || []
-      } else {
-        accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
-      }
+      const tmp = asyncRouter.data.permissionList
+      const accessedRoutes = filterAsyncRouter(tmp)
+      accessedRoutes.push({
+        path: '*',
+        redirect: '/404',
+        hidden: true
+      })
       commit('SET_ROUTES', accessedRoutes)
       resolve(accessedRoutes)
     })
@@ -67,3 +77,4 @@ export default {
   mutations,
   actions
 }
+

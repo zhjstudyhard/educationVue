@@ -1,0 +1,142 @@
+/*
+ * @Author: your name
+ * @Date: 2021-11-30 16:53:27
+ * @LastEditTime: 2021-12-09 03:28:47
+ * @LastEditors: Please set LastEditors
+ * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+ * @FilePath: \vue-element-admin-master\src\store\modules\permission.js
+ */
+import {asyncRoutes,constantRoutes} from '@/router'
+import menu from "@/api/system/menu";
+export function recursionRouter(userRouter = [], allRouter = []) {
+  var realRoutes = [];
+  allRouter.forEach((v, i) => {
+    userRouter.forEach((item, index) => {
+      if (item.name == v.meta.name) {
+        if (item.children && item.children.length > 0) {
+          v.children = recursionRouter(item.children, v.children);
+        }
+        realRoutes.push(v)
+      }
+    })
+  })
+  return realRoutes;
+}
+/**
+ * Use meta.role to determine if the current user has permission
+ * @param roles
+ * @param route
+ */
+function hasPermission(roles, route) {
+  if (route.meta && route.meta.roles) {
+    return roles.some(role => route.meta.roles.includes(role))
+  } else {
+    return true
+  }
+}
+
+/**
+ * Filter asynchronous routing tables by recursion
+ * @param routes asyncRoutes
+ * @param roles
+ */
+//原来的代码
+// export function filterAsyncRoutes(routes, roles) {
+//   const res = []
+
+//   routes.forEach(route => {
+//     const tmp = {
+//       ...route
+//     }
+//     if (hasPermission(roles, tmp)) {
+//       if (tmp.children) {
+//         tmp.children = filterAsyncRoutes(tmp.children, roles)
+//       }
+//       res.push(tmp)
+//     }
+//   })
+
+//   return res
+// }
+
+//新加的代码
+export const filterAsyncRouter = (routers) => { // 遍历后台传来的路由字符串，转换为组件对象
+  const accessedRouters = routers.filter(router => {
+    if (router.component) {
+      if (router.component === 'Layout') { // Layout组件特殊处理
+        router.component = Layout
+      } else {
+        const component = router.component
+        router.component =  router.component = loadView(component)
+      }
+    }
+    if (router.children && router.children.length) {
+      router.children = filterAsyncRouter(router.children)
+    }
+    return true
+  })
+  return accessedRouters
+}
+// 路由懒加载
+export const loadView = (component) => { 
+    return resolve => {require(['@/views' + component + '.vue'], resolve)}
+  // component = "views/" +  component
+  // return () => import(`../views/`+view+`.vue`)
+  // return resolve => require([`@/${component}.vue`], resolve)
+  // return (resolve) => require(["@/views/" + view+".vue"], resolve)
+  // return (resolve) => require([`/src/views/${view}`], resolve)
+}
+
+
+const state = {
+  routes: [],
+  addRoutes: []
+}
+
+const mutations = {
+  SET_ROUTES: (state, routes) => {
+    state.addRoutes = routes
+    state.routes = constantRoutes.concat(routes)
+  }
+}
+//原来的源代码
+// const actions = {
+//   generateRoutes({
+//     commit
+//   }, roles) {
+//     return new Promise(resolve => {
+//       let accessedRoutes
+//       if (roles.includes('admin')) {
+//         accessedRoutes = asyncRoutes || []
+//       } else {
+//         accessedRoutes = filterAsyncRoutes(asyncRoutes, roles)
+//       }
+//       commit('SET_ROUTES', accessedRoutes)
+//       resolve(accessedRoutes)
+//     })
+//   }
+// }
+
+//新加的代码
+const actions = {
+  async generateRoutes({ commit }, roles) {
+        // 取后台路由
+    const asyncRouter = await menu.getMenu()
+    return new Promise((resolve, reject) => {
+      const tmp = asyncRouter.data.permissionList
+      console.log('in getMenus')
+      console.log("tmp",tmp)
+      const accessedRoutes = filterAsyncRouter(tmp)
+      accessedRoutes.push({ path: '*', redirect: '/404', hidden: true })
+      commit('SET_ROUTES', accessedRoutes)
+      resolve(accessedRoutes)
+    })
+  }
+}
+
+export default {
+  namespaced: true,
+  state,
+  mutations,
+  actions
+}
