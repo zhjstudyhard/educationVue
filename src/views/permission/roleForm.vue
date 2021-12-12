@@ -89,11 +89,14 @@ export default {
     save(){
       this.saveBtnDisabled = true
       
-      // var ids = this.$refs.tree.getCheckedKeys().join(",");
-       var permissionIds = this.$refs.tree.getCheckedKeys().join(",");
+      //  var permissionIds = this.$refs.tree.getCheckedKeys().join(",");
+      var ids = this.$refs.tree.getCheckedKeys();
+       //获取子节点未全选时的父节点id
+      let parentArr = this.$refs.tree.getHalfCheckedKeys();
+      
+      var permissionIds = parentArr.concat(ids).join(",");
       //vue elementUI tree树形控件获取父节点ID的实例
       //node_modules\element-ui\lib\element-ui.common.js
-      //25348行修改源码
       let data = { roleId: this.roleId, permissionIds:permissionIds};
       menu.doAssign(data).then(response => {
           if(response.success){

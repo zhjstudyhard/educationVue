@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 22:09:31
- * @LastEditTime: 2021-12-05 22:06:14
+ * @LastEditTime: 2021-12-12 19:03:00
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-element-admin-master\src\utils\request.js
@@ -13,10 +13,9 @@ import {
 } from 'element-ui'
 import store from '@/store'
 // import { getToken } from '@/utils/auth'
-import {
-  getToken,
-  setToken
-} from '@/utils/auth'
+import {getToken,setToken} from '@/utils/auth'
+import {isJson} from '@/utils/validate'
+import { string } from 'clipboard'
 axios.defaults.baseURL = "http://localhost:8089";
 
 // create an axios instance
@@ -60,7 +59,7 @@ service.interceptors.response.use(
    * You can also judge the status by HTTP Status Code
    */
   response => {
-    console.log("response: ",response)
+    console.log("response: ", response)
     if (response.headers['authorization']) {
       store.dispatch("user/setToken", response.headers['authorization'])
     }
@@ -75,6 +74,17 @@ service.interceptors.response.use(
       })
       // 50008: Illegal token; 50012: Other clients logged in; 50014: Token expired;
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+        // to re-login
+        MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
+          confirmButtonText: 'Re-Login',
+          cancelButtonText: 'Cancel',
+          type: 'warning'
+        }).then(() => {
+          store.dispatch('user/resetToken').then(() => {
+            location.reload()
+          })
+        })
+      } else if (res.code === 401) {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
           confirmButtonText: 'Re-Login',
