@@ -60,7 +60,7 @@
           </el-button>
 
           <el-button 
-          v-if="hasPerm('permission.delete')"
+          v-if="hasPerm('permission.remove')"
           type="text" size="mini" @click="() => remove(scope.row)"
             >删除
           </el-button>

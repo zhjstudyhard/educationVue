@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-11-30 16:53:27
- * @LastEditTime: 2021-12-08 23:20:22
- * @LastEditors: your name
+ * @LastEditTime: 2021-12-13 17:39:53
+ * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-element-admin-master\src\permission.js
  */
@@ -46,7 +46,7 @@ router.beforeEach(async(to, from, next) => {
 
           // generate accessible routes map based on roles
           const accessRoutes = await store.dispatch('permission/generateRoutes', roles)
-
+          
           // dynamically add accessible routes
           router.addRoutes(accessRoutes)
 
