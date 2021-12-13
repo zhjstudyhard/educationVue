@@ -9,7 +9,7 @@
 <template>
   <el-form style="margin-top: 10px;" size="small" label-width="65px">
     <el-form-item label="用户名" :required="true">
-      <el-input v-model.trim="user.username" style="width: 35%" />
+      <el-input v-model.trim="user.name" style="width: 35%" />
     </el-form-item>
     <el-form-item label="邮箱" :required="true">
       <el-input v-model.trim="user.email" style="width: 35%" />
@@ -27,7 +27,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          username: "",
+          name: "",
           email: "",
         };
       },

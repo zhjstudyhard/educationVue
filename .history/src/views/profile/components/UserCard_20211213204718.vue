@@ -84,7 +84,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          username: "",
+          name: "",
           email: "",
           avatar: "",
           role: "",

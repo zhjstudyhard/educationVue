@@ -1,7 +1,7 @@
 <template>
   <el-card style="margin-bottom: 20px">
     <div slot="header" class="clearfix">
-      <span>个人信息</span>
+      <span>About me</span>
     </div>
 
     <div class="user-profile">
@@ -84,7 +84,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          username: "",
+          name: "",
           email: "",
           avatar: "",
           role: "",

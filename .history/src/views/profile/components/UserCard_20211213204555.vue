@@ -1,7 +1,7 @@
 <template>
   <el-card style="margin-bottom: 20px">
     <div slot="header" class="clearfix">
-      <span>个人信息</span>
+      <span>About me</span>
     </div>
 
     <div class="user-profile">
@@ -50,12 +50,12 @@
               <li>
                 <svg-icon icon-class="phone" /> 手机号码
                 <!-- <div class="user-right">{{ user.phone }}</div> -->
-                <div class="user-right">{{ user.username }}</div>
+                 <div class="user-right">{{ user.username }}</div>
               </li>
               <li>
                 <svg-icon icon-class="email" /> 用户邮箱
                 <!-- <div class="user-right">{{ user.email }}</div> -->
-                <div class="user-right">{{ user.username }}</div>
+                 <div class="user-right">{{ user.username }}</div>
               </li>
               <li>
                 <svg-icon icon-class="anq" /> 安全设置
@@ -84,7 +84,7 @@ export default {
       type: Object,
       default: () => {
         return {
-          username: "",
+          name: "",
           email: "",
           avatar: "",
           role: "",
@@ -150,27 +150,6 @@ export default {
       padding-bottom: 10px;
       margin-bottom: 10px;
       font-weight: bold;
-    }
-  }
-
-  .avatar {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-  }
-  .user-info {
-    padding-left: 0;
-    list-style: none;
-    li {
-      border-bottom: 1px solid #F0F3F4;
-      padding: 11px 0;
-      font-size: 13px;
-    }
-    .user-right {
-      float: right;
-      a {
-        color: #317EF3;
-      }
     }
   }
 }

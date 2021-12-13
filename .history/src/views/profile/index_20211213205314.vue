@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-30 16:53:28
- * @LastEditTime: 2021-12-13 21:31:58
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-12-13 20:50:28
+ * @LastEditors: your name
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \education-vue-admin\src\views\profile\index.vue
 -->
@@ -18,13 +18,13 @@
         <el-col :span="18" :xs="24">
           <el-card>
             <el-tabs v-model="activeTab">
-              <!-- <el-tab-pane label="Activity" name="activity">
+              <el-tab-pane label="Activity" name="activity">
                 <activity />
-              </el-tab-pane> -->
-              <!-- <el-tab-pane label="Timeline" name="timeline">
+              </el-tab-pane>
+              <el-tab-pane label="Timeline" name="timeline">
                 <timeline />
-              </el-tab-pane> -->
-              <el-tab-pane label="用户资料" name="account">
+              </el-tab-pane>
+              <el-tab-pane label="Account" name="account">
                 <account :user="user" />
               </el-tab-pane>
             </el-tabs>
@@ -66,7 +66,7 @@ export default {
   methods: {
     getUser() {
       this.user = {
-        username: this.name,
+        name: this.name,
         role: this.roles.join(' | '),
         email: 'admin@test.com',
         avatar: this.avatar
