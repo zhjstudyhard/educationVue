@@ -194,6 +194,15 @@ export default {
                 },
               });
             });
+            // this.$axios.post('/blog/create', this.ruleForm).then(res => {
+            //   console.log(res)
+            // _this.$alert('操作成功', '提示', {
+            //   confirmButtonText: '确定',
+            //   callback: action => {
+            //     _this.$router.push("/blogList")
+            //   }
+            // });
+            // })
           } else {
             this.$axios.post("/blog/update", this.ruleForm).then((res) => {
               console.log(res);

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-21 19:30:08
- * @LastEditTime: 2021-12-15 11:31:23
+ * @LastEditTime: 2021-12-15 11:29:27
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-element-admin-master\src\views\permission\userList.vue
@@ -85,11 +85,11 @@
             >编辑</el-button
           >
           <el-button
-           v-if="(scope.row.locked == 0) && hasPerm('user.update')"
             type="primary"
             size="small"
             @click="handleEditLocked(scope)"
             icon="el-icon-edit"
+            v-if = "scope.row.locked == 0"
             >锁定</el-button
           >
           <el-button
@@ -101,23 +101,22 @@
             >解锁</el-button
           >
           <el-button
-          v-if="(scope.row.enabled == 0) && hasPerm('user.update')"
             type="primary"
             size="small"
             @click="handleEditDisable(scope)"
             icon="el-icon-edit"
+            v-if = "scope.row.enabled == 0"
             >停用</el-button
           >
           <el-button
-          v-if="(scope.row.enabled == 1) && hasPerm('user.update')"
             type="primary"
             size="small"
             @click="handleEditEnable(scope)"
             icon="el-icon-edit"
+            v-if = "scope.row.enabled == 1"
             >启用</el-button
           >
           <el-button
-          v-if="hasPerm('user.delete')"
             type="danger"
             size="small"
             @click="handleDelete(scope.row.id)"

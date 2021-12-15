@@ -62,14 +62,20 @@
             @click="goBlogEditPage(scope.row.id)"
             >编辑</el-button
           >
-          <el-button
-            slot="reference"
+          <el-popconfirm
             icon="el-icon-delete"
-            size="mini"
-            type="danger"
-            @click="deleteArticleById(scope.row.id)"
-            >删除</el-button
+            iconColor="red"
+            title="确定删除吗？"
+            @confirm="deleteArticleById(scope.row.id)"
           >
+            <el-button
+              slot="reference"
+              icon="el-icon-delete"
+              size="mini"
+              type="danger"
+              >删除</el-button
+            >
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -146,7 +152,7 @@ export default {
               type: "success",
               message: "删除成功!",
             });
-            this.resetData();
+            this.getDictionaryList(1);
           });
         })
         .catch((err) => {

@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-11-21 19:30:08
- * @LastEditTime: 2021-12-15 10:55:10
+ * @LastEditTime: 2021-12-09 00:19:16
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-element-admin-master\src\views\permission\userList.vue
@@ -35,9 +35,7 @@
     <el-button type="warning" @click="resetData" icon="el-icon-refresh-left"
       >重置</el-button
     >
-    <el-button 
-    v-if="hasPerm('dictionary.add')"
-    type="primary" @click="handleAddDictionary" icon="el-icon-plus"
+    <el-button type="primary" @click="handleAddDictionary" icon="el-icon-plus"
       >新增</el-button
     >
 
@@ -74,7 +72,6 @@
       <el-table-column align="center" label="操作">
         <template slot-scope="scope">
           <el-button
-           v-if="hasPerm('dictionary.update')"
             type="primary"
             size="small"
             @click="handleEdit(scope)"
@@ -82,7 +79,6 @@
             >编辑</el-button
           >
           <el-button
-          v-if="hasPerm('dictionary.delete')"
             type="danger"
             size="small"
             @click="handleDelete(scope.row.id)"

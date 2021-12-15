@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-08 22:09:31
- * @LastEditTime: 2021-12-15 14:17:09
+ * @LastEditTime: 2021-12-12 19:03:00
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \vue-element-admin-master\src\utils\request.js
@@ -87,8 +87,8 @@ service.interceptors.response.use(
       } else if (res.code === 401) {
         // to re-login
         MessageBox.confirm('You have been logged out, you can cancel to stay on this page, or log in again', 'Confirm logout', {
-          confirmButtonText: '重新登陆',
-          cancelButtonText: '取消',
+          confirmButtonText: 'Re-Login',
+          cancelButtonText: 'Cancel',
           type: 'warning'
         }).then(() => {
           store.dispatch('user/resetToken').then(() => {

@@ -1,21 +1,23 @@
 <template>
-  <div class="bloglist-contain" style="margin-left: 10px">
+  <div class="bloglist-contain">
     <!--搜索，暂未实现-->
     <el-row>
-      <el-col :span="20">
+      <el-col :span="8">
         <el-input
           v-model="queryInfo.title"
+          :clearable="true"
           placeholder="请输入标题"
-          prefix-icon="el-icon-search"
-          style="width: 250px; margin-right: 20px"
-        ></el-input>
-        <el-button type="success" icon="el-icon-search" @click="search"
-          >搜索</el-button
+          size="small"
+          style="min-width: 500px"
+          @clear="search"
+          @keyup.native.enter="search"
         >
-        <el-button type="warning" @click="resetData" icon="el-icon-refresh-left"
-          >重置</el-button
-        >
-        <!-- </el-input> -->
+          <el-button
+            slot="append"
+            icon="el-icon-search"
+            @click="search"
+          ></el-button>
+        </el-input>
       </el-col>
     </el-row>
     <!--博客列表-->
@@ -62,14 +64,20 @@
             @click="goBlogEditPage(scope.row.id)"
             >编辑</el-button
           >
-          <el-button
-            slot="reference"
+          <el-popconfirm
             icon="el-icon-delete"
-            size="mini"
-            type="danger"
-            @click="deleteArticleById(scope.row.id)"
-            >删除</el-button
+            iconColor="red"
+            title="确定删除吗？"
+            @confirm="deleteBlogById(scope.row.id)"
           >
+            <el-button
+              slot="reference"
+              icon="el-icon-delete"
+              size="mini"
+              type="danger"
+              >删除</el-button
+            >
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -94,12 +102,12 @@
 <script>
 import article from "@/api/article/article";
 export default {
-  name: "ArticleList",
+  name: "BlogList",
   data() {
     return {
       queryInfo: {
         title: "",
-        // categoryId: null,
+        categoryId: null,
         currentPage: 1,
         pageSize: 10,
       },
@@ -127,48 +135,33 @@ export default {
     },
     //获取当前分页的博客
     getData() {
-      article.getArticlePage(this.queryInfo).then((response) => {
-        this.articleList = response.data.data.data;
-        this.total = response.data.data.total;
+       article.getArticlePage(this.queryInfo)
+       .then((response) =>{
+         this.articleList = response.data.data.data
+         this.total = response.data.data.data.total
+       })
+    },
+    //通过博客id删除博客
+    deleteBlogById(blogId) {
+      const _this = this;
+      this.$axios.get("/blog/delete/" + blogId).then((res) => {
+        _this.$alert("操作成功", "提示", {
+          confirmButtonText: "确定",
+          callback: (action) => {
+            //_this.$router.push("/blogList")
+            _this.getData();
+          },
+        });
       });
     },
-    //通过id删除文章
-    deleteArticleById(id) {
-      let data = { id: id };
-      this.$confirm("确认删除当前文章?", "Warning", {
-        confirmButtonText: "确认",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then((response) => {
-          article.deleteArticleById(data).then((response) => {
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-            this.resetData();
-          });
-        })
-        .catch((err) => {
-          console.error(err);
-        });
-    },
-    //查询
-    search() {
-      this.queryInfo.currentPage = 1;
-      this.getData();
-    },
-    //重置数据
-    resetData() {
-      this.queryInfo = {};
-      this.getData();
-    },
+    //未实现
+    search() {},
     handleSizeChange(newPageSize) {
       this.queryInfo.pageSize = newPageSize;
       this.getData();
     },
     handleCurrentChange(newPage) {
-      this.queryInfo.currentPage = newPage;
+      this.queryInfo.pageNum = newPage;
       this.getData();
     },
 

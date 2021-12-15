@@ -90,6 +90,7 @@
             size="small"
             @click="handleEditLocked(scope)"
             icon="el-icon-edit"
+            <!-- v-if = "scope.row.locked == 0" -->
             >锁定</el-button
           >
           <el-button

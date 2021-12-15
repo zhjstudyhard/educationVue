@@ -9,7 +9,10 @@
           prefix-icon="el-icon-search"
           style="width: 250px; margin-right: 20px"
         ></el-input>
-        <el-button type="success" icon="el-icon-search" @click="search"
+        <el-button
+          type="success"
+          icon="el-icon-search"
+          @click="search"
           >搜索</el-button
         >
         <el-button type="warning" @click="resetData" icon="el-icon-refresh-left"
@@ -62,14 +65,20 @@
             @click="goBlogEditPage(scope.row.id)"
             >编辑</el-button
           >
-          <el-button
-            slot="reference"
+          <el-popconfirm
             icon="el-icon-delete"
-            size="mini"
-            type="danger"
-            @click="deleteArticleById(scope.row.id)"
-            >删除</el-button
+            iconColor="red"
+            title="确定删除吗？"
+            @confirm="deleteArticleById(scope.row.id)"
           >
+            <el-button
+              slot="reference"
+              icon="el-icon-delete"
+              size="mini"
+              type="danger"
+              >删除</el-button
+            >
+          </el-popconfirm>
         </template>
       </el-table-column>
     </el-table>
@@ -133,33 +142,25 @@ export default {
       });
     },
     //通过id删除文章
-    deleteArticleById(id) {
-      let data = { id: id };
-      this.$confirm("确认删除当前文章?", "Warning", {
-        confirmButtonText: "确认",
-        cancelButtonText: "取消",
-        type: "warning",
-      })
-        .then((response) => {
-          article.deleteArticleById(data).then((response) => {
-            this.$message({
-              type: "success",
-              message: "删除成功!",
-            });
-            this.resetData();
-          });
-        })
-        .catch((err) => {
-          console.error(err);
+    deleteArticleById(blogId) {
+      const _this = this;
+      this.$axios.get("/blog/delete/" + blogId).then((res) => {
+        _this.$alert("操作成功", "提示", {
+          confirmButtonText: "确定",
+          callback: (action) => {
+            //_this.$router.push("/blogList")
+            _this.getData();
+          },
         });
+      });
     },
     //查询
     search() {
-      this.queryInfo.currentPage = 1;
-      this.getData();
+        this.queryInfo.currentPage = 1;
+        this.getData();
     },
     //重置数据
-    resetData() {
+    resetData(){
       this.queryInfo = {};
       this.getData();
     },
