@@ -38,14 +38,17 @@ import nestedRouter from './modules/nested'
  * a base page that does not have permission requirements
  * all roles can be accessed
  */
-export const constantRoutes = [{
+export const constantRoutes = [
+  {
     path: '/redirect',
     component: Layout,
     hidden: true,
-    children: [{
-      path: '/redirect/:path(.*)',
-      component: () => import('@/views/redirect/index')
-    }]
+    children: [
+      {
+        path: '/redirect/:path(.*)',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
   },
   {
     path: '/login',
@@ -71,32 +74,28 @@ export const constantRoutes = [{
     path: '/',
     component: Layout,
     redirect: '/dashboard',
-    children: [{
-      path: 'dashboard',
-      component: () => import('@/views/dashboard/index'),
-      name: '首页',
-      meta: {
-        title: '首页',
-        icon: 'dashboard',
-        affix: true
+    children: [
+      {
+        path: 'dashboard',
+        component: () => import('@/views/dashboard/index'),
+        name: '首页',
+        meta: { title: '首页', icon: 'dashboard', affix: true }
       }
-    }]
+    ]
   },
   {
     path: '/profile',
     component: Layout,
     redirect: '/profile/index',
     hidden: true,
-    children: [{
-      path: 'index',
-      component: () => import('@/views/profile/index'),
-      name: 'Profile',
-      meta: {
-        title: 'Profile',
-        icon: 'user',
-        noCache: true
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/profile/index'),
+        name: 'Profile',
+        meta: { title: 'Profile', icon: 'user', noCache: true }
       }
-    }]
+    ]
   }
 ]
 
@@ -104,7 +103,8 @@ export const constantRoutes = [{
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [{
+export const asyncRoutes = [
+  {
     path: '/permission',
     component: Layout,
     redirect: '/permission/menus',
@@ -113,9 +113,10 @@ export const asyncRoutes = [{
     meta: {
       title: '系统管理',
       icon: 'lock',
-      // you can set roles in root nav
+     // you can set roles in root nav
     },
-    children: [{
+    children: [
+      {
         path: 'userList',
         component: () => import('@/views/permission/userList'),
         name: '用户管理',
@@ -138,7 +139,7 @@ export const asyncRoutes = [{
         meta: {
           title: '角色权限',
         },
-        hidden: true
+        hidden:true
       },
       {
         path: 'menus',
@@ -156,64 +157,32 @@ export const asyncRoutes = [{
           title: '数据字典',
         }
       },
-      // {
-      //   path: 'operateLog',
-      //   component: () => import('@/views/permission/log/operateLog'),
-      //   name: '操作日志',
-      //   meta: {
-      //     title: '操作日志',
-      //   }
-      // }
+      {
+        path: 'operateLog',
+        component: () => import('@/views/permission/log/operateLog'),
+        name: '操作日志',
+        meta: {
+          title: '操作日志',
+        }
+      }
     ],
   },
   {
-    path: '/operateLog',
-    component: Layout,
-    name: '日志管理',
-    meta: {
-      title: '日志管理'
-    },
-    children: [{
-      path: 'operateLogList',
-      component: () => import('@/views/log/operateLog'),
-      name: '操作日志',
-      meta: {
-        title: '操作日志',
-      }
-    },
-    {
-      path: 'LoginList',
-      component: () => import('@/views/log/operateLog'),
-      name: '登录日志',
-      meta: {
-        title: '登录日志',
-      }
-    }
-  ],
-  },
-  {
-    path: '/article',
+    path: '/blog',
     component: Layout,
     name: '文章管理',
     meta: {
       title: '文章管理'
     },
-    children: [{
-        path: 'articleList',
-        component: () => import('@/views/article/ArticleList'),
-        name: '文章列表',
-        meta: {
-          title: '文章列表',
-        }
-      },
+    children: [
       {
-        path: 'articleEdit',
-        component: () => import('@/views/article/ArticleEdit'),
-        name: '写文章',
+        path: 'blogList',
+        component: () => import('@/views/blog/BlogList'),
+        name: '文章管理',
         meta: {
-          title: '写文章',
+          title: '文章管理',
         }
-      },
+      }
     ],
   }
   // 404 page must be placed at the end !!!
@@ -222,9 +191,7 @@ export const asyncRoutes = [{
 
 const createRouter = () => new Router({
   // mode: 'history', // require service support
-  scrollBehavior: () => ({
-    y: 0
-  }),
+  scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
 

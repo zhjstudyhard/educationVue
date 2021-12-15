@@ -37,7 +37,7 @@
             <el-dropdown-item>Docs</el-dropdown-item>
           </a> -->
           <el-dropdown-item divided @click.native="logout">
-            <span style="display:block;">登出<el-badge is-dot></el-badge></span>
+            <span style="display:block;">退出登录<el-badge is-dot></el-badge></span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

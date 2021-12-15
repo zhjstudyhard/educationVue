@@ -192,23 +192,23 @@ export const asyncRoutes = [{
   ],
   },
   {
-    path: '/article',
+    path: '/blog',
     component: Layout,
     name: '文章管理',
     meta: {
       title: '文章管理'
     },
     children: [{
-        path: 'articleList',
-        component: () => import('@/views/article/ArticleList'),
+        path: 'blogList',
+        component: () => import('@/views/blog/BlogList'),
         name: '文章列表',
         meta: {
           title: '文章列表',
         }
       },
       {
-        path: 'articleEdit',
-        component: () => import('@/views/article/ArticleEdit'),
+        path: 'blogEdit',
+        component: () => import('@/views/blog/BlogEdit'),
         name: '写文章',
         meta: {
           title: '写文章',
