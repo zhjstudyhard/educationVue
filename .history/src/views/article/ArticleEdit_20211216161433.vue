@@ -122,7 +122,7 @@
 import dictionary from "@/api/system/dictionary";
 import article from "@/api/article/article";
 export default {
-  // name: "BlogEdit",
+  name: "BlogEdit",
   data() {
     return {
       types: {},
@@ -157,20 +157,17 @@ export default {
       },
     };
   },
+  // 监听器
+  watch: {
+    $route(to, from) {
+      this.getArticleById();
+    },
+  },
+
   created() {
-    this.getTypes();
-    this.init();
+    this.getArticleById();
   },
   methods: {
-    //通过id获取文章
-    init() {
-      if (this.$route.params && this.$route.params.id) {
-        let data = { id: this.$route.params.id };
-        article.getArticleById(data).then((response) => {
-          this.ruleForm = response.data.data;
-        });
-      }
-    },
     //双击将正文的内容前100字自动写入文章描述中
     autoWrite() {
       if (this.ruleForm.content.length < 100) {
@@ -190,27 +187,27 @@ export default {
         ""
       ).length;
     },
-    //提交文章
+    //提交博客
     submitForm(formName) {
       this.$refs[formName].validate((valid) => {
         if (valid) {
           const _this = this;
           if (_this.ruleForm.id == "") {
             article.addArticle(this.ruleForm).then((response) => {
-              _this.$alert("添加成功", "提示", {
+              _this.$alert("操作成功", "提示", {
                 confirmButtonText: "确定",
                 callback: (action) => {
-                  _this.$router.push("articleList");
+                  _this.$router.push("/blogList");
                 },
               });
             });
           } else {
-            article.updateArticle(this.ruleForm).then((response) => {
-              _this.$alert("修改成功", "提示", {
+            this.$axios.post("/blog/update", this.ruleForm).then((res) => {
+              console.log(res);
+              _this.$alert("操作成功", "提示", {
                 confirmButtonText: "确定",
                 callback: (action) => {
-                  this.$router.push({ path: '/article/articleList'})
-                  // _this.$router.push("articleList");
+                  _this.$router.push("/blogList");
                 },
               });
             });
@@ -221,17 +218,43 @@ export default {
         }
       });
     },
-    //重置文章内容
+    //重置博客内容
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    //获取文章分类
+    //获取博客分类
     getTypes() {
       let data = { dictionaryType: "ARTICLE_CATEGORY" };
       dictionary.queryDictionaryByType(data).then((response) => {
         this.types = response.data.data;
       });
     },
+    //通过id获取博客
+    getArticleById() {
+      const blogId = this.$route.params.id;
+      const _this = this;
+      if (blogId) {
+        this.$axios.get("/blog/detail/" + blogId).then((res) => {
+          const blog = res.data.data;
+          _this.ruleForm.id = blog.id;
+          _this.ruleForm.title = blog.title;
+          _this.ruleForm.firstPicture = blog.firstPicture;
+          _this.ruleForm.description = blog.description;
+          _this.ruleForm.content = blog.content;
+          _this.ruleForm.words = blog.words;
+          _this.ruleForm.views = blog.views;
+          _this.ruleForm.type = blog.type;
+          _this.ruleForm.status = blog.status;
+          _this.ruleForm.userId = blog.userId;
+          _this.ruleForm.createTime = blog.createTime;
+          _this.ruleForm.updateTime = blog.updateTime;
+        });
+      }
+    },
+  },
+  created() {
+    this.getTypes();
+    this.getBlogById();
   },
 };
 </script>

@@ -157,6 +157,14 @@ export default {
       },
     };
   },
+  // 监听器
+  watch: {
+    $route(to, from) {
+      this.getTypes();
+      this.init();
+    },
+  },
+
   created() {
     this.getTypes();
     this.init();
@@ -167,6 +175,7 @@ export default {
       if (this.$route.params && this.$route.params.id) {
         let data = { id: this.$route.params.id };
         article.getArticleById(data).then((response) => {
+          console.log("article2: ", response.data.data);
           this.ruleForm = response.data.data;
         });
       }
@@ -197,20 +206,20 @@ export default {
           const _this = this;
           if (_this.ruleForm.id == "") {
             article.addArticle(this.ruleForm).then((response) => {
-              _this.$alert("添加成功", "提示", {
+              _this.$alert("操作成功", "提示", {
                 confirmButtonText: "确定",
                 callback: (action) => {
-                  _this.$router.push("articleList");
+                  _this.$router.push("/blogList");
                 },
               });
             });
           } else {
-            article.updateArticle(this.ruleForm).then((response) => {
-              _this.$alert("修改成功", "提示", {
+            this.$axios.post("/blog/update", this.ruleForm).then((res) => {
+              console.log(res);
+              _this.$alert("操作成功", "提示", {
                 confirmButtonText: "确定",
                 callback: (action) => {
-                  this.$router.push({ path: '/article/articleList'})
-                  // _this.$router.push("articleList");
+                  _this.$router.push("/blogList");
                 },
               });
             });

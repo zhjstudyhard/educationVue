@@ -215,8 +215,8 @@ export const asyncRoutes = [{
         }
       },
       {
-        path: 'articleEdit/:id',
-        component: () => import('@/views/article/ArticleEdit'),
+        path: '/blog/edit/:blogId',
+        component: BlogEdit,
         name: '文章编辑',
         meta: {
             title: '文章编辑'

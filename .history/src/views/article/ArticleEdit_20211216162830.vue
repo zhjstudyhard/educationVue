@@ -157,18 +157,26 @@ export default {
       },
     };
   },
+  // 监听器
+  watch: {
+    $route(to, from) {
+      this.init();
+    },
+  },
+
   created() {
-    this.getTypes();
     this.init();
   },
   methods: {
     //通过id获取文章
     init() {
       if (this.$route.params && this.$route.params.id) {
+        this.getTypes();
         let data = { id: this.$route.params.id };
-        article.getArticleById(data).then((response) => {
-          this.ruleForm = response.data.data;
-        });
+        article.getArticleById(data).then((response) =>{
+          console.log("article2: ",response.data.data)
+          this.ruleForm = response.data.data
+        })
       }
     },
     //双击将正文的内容前100字自动写入文章描述中
@@ -197,20 +205,20 @@ export default {
           const _this = this;
           if (_this.ruleForm.id == "") {
             article.addArticle(this.ruleForm).then((response) => {
-              _this.$alert("添加成功", "提示", {
+              _this.$alert("操作成功", "提示", {
                 confirmButtonText: "确定",
                 callback: (action) => {
-                  _this.$router.push("articleList");
+                  _this.$router.push("/blogList");
                 },
               });
             });
           } else {
-            article.updateArticle(this.ruleForm).then((response) => {
-              _this.$alert("修改成功", "提示", {
+            this.$axios.post("/blog/update", this.ruleForm).then((res) => {
+              console.log(res);
+              _this.$alert("操作成功", "提示", {
                 confirmButtonText: "确定",
                 callback: (action) => {
-                  this.$router.push({ path: '/article/articleList'})
-                  // _this.$router.push("articleList");
+                  _this.$router.push("/blogList");
                 },
               });
             });
@@ -232,7 +240,33 @@ export default {
         this.types = response.data.data;
       });
     },
+
+    // getArticleById() {
+    //   // const blogId = this.$route.params.id;
+    //   const _this = this;
+    //   if (blogId) {
+    //     this.$axios.get("/blog/detail/" + blogId).then((res) => {
+    //       const blog = res.data.data;
+    //       _this.ruleForm.id = blog.id;
+    //       _this.ruleForm.title = blog.title;
+    //       _this.ruleForm.firstPicture = blog.firstPicture;
+    //       _this.ruleForm.description = blog.description;
+    //       _this.ruleForm.content = blog.content;
+    //       _this.ruleForm.words = blog.words;
+    //       _this.ruleForm.views = blog.views;
+    //       _this.ruleForm.type = blog.type;
+    //       _this.ruleForm.status = blog.status;
+    //       _this.ruleForm.userId = blog.userId;
+    //       _this.ruleForm.createTime = blog.createTime;
+    //       _this.ruleForm.updateTime = blog.updateTime;
+    //     });
+    //   }
+    // },
   },
+  // created() {
+    
+  //   // this.getBlogById();
+  // },
 };
 </script>
 <style scoped>

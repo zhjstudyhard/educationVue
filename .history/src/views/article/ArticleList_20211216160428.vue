@@ -55,8 +55,16 @@
       <!--删除和查看操作-->
       <el-table-column label="操作" width="200">
         <template v-slot="scope">
-          <router-link :to="'/article/articleEdit/' + scope.row.id">
-            <el-button type="warning" size="small" icon="el-icon-setting"
+          <!-- <el-button
+            icon="el-icon-edit"
+            size="mini"
+            type="primary"
+            @click="goBlogEditPage(scope.row.id)"
+            >编辑</el-button
+          > -->
+          <router-link :to="'/article/articleEdit/:id' + scope.row.id">
+            <el-button
+              type="warning" size="small" icon="el-icon-setting"
               >编辑</el-button
             >
           </router-link>
@@ -111,7 +119,11 @@ export default {
     this.getData();
   },
   methods: {
-    //获取文章类型
+    //跳转到博客编辑页
+    goBlogEditPage(blogId) {
+      this.$router.push(`/blog/edit/${blogId}`);
+    },
+    //获取博客类型
     getTypes() {
       // const _this = this;
       // this.$axios.get("/types").then((res) => {
@@ -119,7 +131,7 @@ export default {
       // });
       //console.log(this.types)
     },
-    //获取当前分页的文章
+    //获取当前分页的博客
     getData() {
       article.getArticlePage(this.queryInfo).then((response) => {
         this.articleList = response.data.data.data;

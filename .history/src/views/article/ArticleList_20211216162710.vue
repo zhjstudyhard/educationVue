@@ -56,7 +56,8 @@
       <el-table-column label="操作" width="200">
         <template v-slot="scope">
           <router-link :to="'/article/articleEdit/' + scope.row.id">
-            <el-button type="warning" size="small" icon="el-icon-setting"
+            <el-button
+              type="warning" size="small" icon="el-icon-setting"
               >编辑</el-button
             >
           </router-link>

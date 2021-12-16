@@ -157,6 +157,14 @@ export default {
       },
     };
   },
+  // 监听器
+  watch: {
+    $route(to, from) {
+      this.getTypes();
+      this.init();
+    },
+  },
+
   created() {
     this.getTypes();
     this.init();
@@ -206,11 +214,10 @@ export default {
             });
           } else {
             article.updateArticle(this.ruleForm).then((response) => {
-              _this.$alert("修改成功", "提示", {
+              _this.$alert("修改", "提示", {
                 confirmButtonText: "确定",
                 callback: (action) => {
-                  this.$router.push({ path: '/article/articleList'})
-                  // _this.$router.push("articleList");
+                  _this.$router.push("articleList");
                 },
               });
             });
