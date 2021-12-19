@@ -171,7 +171,7 @@ export default {
         this.$alert("操作成功", "提示", {
           confirmButtonText: "确定",
           callback: (action) => {
-            // this.page(.currentPage);
+            this.page(_this.currentPage);
             this.$router.push({ path: '/article/articleList'})
           },
         });
