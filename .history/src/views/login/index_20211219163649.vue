@@ -12,6 +12,14 @@
         </span>
         <el-input
           ref="username"
+          placeholder="username"
+          name="username"
+          type="text"
+          tabindex="1"
+          autocomplete="on"
+        />
+        <el-input
+          ref="username"
           v-model="loginForm.username"
           placeholder="username"
           name="username"
@@ -31,11 +39,10 @@
             ref="password"
             v-model="loginForm.password"
             :type="passwordType"
-            placeholder="password"
+            placeholder="Password"
             name="password"
             tabindex="2"
             autocomplete="on"
-            auto-complete="new-password"
             @keyup.native="checkCapslock"
             @blur="capsTooltip = false"
             @keyup.enter.native="handleLogin"
@@ -46,16 +53,31 @@
         </el-form-item>
       </el-tooltip>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+
+      <!-- <div style="position:relative">
+        <div class="tips">
+          <span>Username : admin</span>
+          <span>Password : any</span>
+        </div>
+        <div class="tips">
+          <span style="margin-right:18px;">Username : editor</span>
+          <span>Password : any</span>
+        </div>
+
+        <el-button class="thirdparty-button" type="primary" @click="showDialog=true">
+          Or connect with
+        </el-button>
+      </div> -->
     </el-form>
 
-    <!-- <el-dialog title="Or connect with" :visible.sync="showDialog">
+    <el-dialog title="Or connect with" :visible.sync="showDialog">
       Can not be simulated on local, so please combine you own business simulation! ! !
       <br>
       <br>
       <br>
       <social-sign />
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
