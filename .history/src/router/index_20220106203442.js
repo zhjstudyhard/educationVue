@@ -226,7 +226,7 @@ export const asyncRoutes = [{
       {
         path: 'commentList',
         component: () => import('@/views/article/CommentList'),
-        name: '评论列表',
+        name: '评论管理',
         meta: {
           title: '评论管理'
         },
