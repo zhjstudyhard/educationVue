@@ -235,8 +235,7 @@ export default {
     },
     //获取所有文章列表
     getArticleList() {
-      let data = { isAdmin: this.queryInfo.isAdmin };
-      article.getAllArticle(data).then((response) => {
+      article.getAllArticle().then((response) => {
         // console.log("comment: ", response.data.data);
         this.articleList = response.data.data.data;
       });
