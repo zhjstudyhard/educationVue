@@ -46,20 +46,11 @@ const actions = {
       reject(error)
     })
   },
-  setAvatar({ commit },avatar) {
-    return new Promise(resolve => {
-      commit('SET_AVATAR', avatar)
-      // setToken(token)
-      resolve()
-    }).catch(error => {
-      reject(error)
-    })
-  },
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password,isAdmin:1 }).then(response => {
+      login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)

@@ -102,7 +102,7 @@ export default {
     };
     return {
       loginForm: {
-        // isAdmin: 1,
+        isAdmin: 1,
         // username: 'admin',
         // password: '111111'
         username: "",

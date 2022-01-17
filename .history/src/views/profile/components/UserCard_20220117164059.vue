@@ -259,10 +259,8 @@ export default {
               confirmButtonText: "重新登陆",
               callback: (action) => {
                 this.$refs[formName].resetFields();
-                // this.$router.push({ path: "/login" });
+                this.$router.push({ path: "/login" });
                 this.$store.dispatch('user/logout')
-                location.reload()
-                // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
               },
             });
           });

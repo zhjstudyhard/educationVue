@@ -37,19 +37,19 @@ const mutations = {
 }
 
 const actions = {
-  setToken({ commit },token) {
+  setToken({ commit },avatar) {
     return new Promise(resolve => {
-      commit('SET_TOKEN', token)
-      setToken(token)
+      commit('SET_AVATAR', avatar)
+      // setToken(token)
       resolve()
     }).catch(error => {
       reject(error)
     })
   },
-  setAvatar({ commit },avatar) {
+  setAvatar({ commit },token) {
     return new Promise(resolve => {
-      commit('SET_AVATAR', avatar)
-      // setToken(token)
+      commit('SET_TOKEN', token)
+      setToken(token)
       resolve()
     }).catch(error => {
       reject(error)
@@ -59,7 +59,7 @@ const actions = {
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password,isAdmin:1 }).then(response => {
+      login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)

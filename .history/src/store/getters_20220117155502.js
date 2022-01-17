@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-11-30 16:53:27
- * @LastEditTime: 2022-01-17 15:57:58
+ * @LastEditTime: 2022-01-17 15:55:02
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \education-vue-admin\src\store\getters.js
@@ -15,7 +15,7 @@ const getters = {
   token: state => state.user.token,
   avatar: state => state.user.avatar,
   name: state => state.user.username,
-  gmtCreate:state => state.user.gmtCreate,
+  gmtCreate:state => state.gmtCreate,
   // introduction: state => state.user.introduction,
   roles: state => state.user.roles,
   permission_routes: state => state.permission.routes,

@@ -156,8 +156,6 @@
 <script>
 import PanThumb from "@/components/PanThumb";
 import { encrypt } from "@/utils/rsaEncrypt";
-import user from "@/api/system/user";
-import store from "@/store";
 export default {
   components: { PanThumb },
   props: {
@@ -167,7 +165,6 @@ export default {
         return {
           username: "",
           avatar: "",
-          gmtCreate: "",
         };
       },
     },
@@ -209,29 +206,18 @@ export default {
       },
     };
   },
-  computed: {
-    header() {
-      return {
-        Authorization: store.getters.token,
-      };
-    },
-  },
   methods: {
     updateAvatar() {
       let data = { fileId: this.fileId };
-      user.updateAvatar(data).then((response) => {
+      updateAvatar(data).then((response) => {
         this.$message({
           showClose: true,
           message: "修改成功",
           type: "success",
         });
-        // commit('SET_AVATAR', this.user.avatar)
-        store.dispatch("user/setAvatar", this.user.avatar);
-
       });
     },
     handleAvatarSuccess(res, file) {
-      // console.log("File: ", res.data.data);
       this.user.avatar = res.data.data.filePath;
       this.fileId = res.data.data.id;
     },
@@ -254,15 +240,12 @@ export default {
             oldPassword: encrypt(this.passForm.oldPassword.trim()),
             newPassword: encrypt(this.passForm.newPassword),
           };
-          user.updatePassword(data).then((response) => {
+          updatePassword(data).then((response) => {
             this.$alert("修改成功", "提示", {
               confirmButtonText: "重新登陆",
               callback: (action) => {
                 this.$refs[formName].resetFields();
-                // this.$router.push({ path: "/login" });
-                this.$store.dispatch('user/logout')
-                location.reload()
-                // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+                this.$router.push({ path: "/login" });
               },
             });
           });
@@ -280,29 +263,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.avatar-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.avatar-uploader .el-upload:hover {
-  border-color: #409EFF;
-}
-.avatar-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  width: 178px;
-  height: 178px;
-  line-height: 178px;
-  text-align: center;
-}
-.avatar {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
 .box-center {
   margin: 0 auto;
   display: table;

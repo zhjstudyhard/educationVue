@@ -156,8 +156,8 @@
 <script>
 import PanThumb from "@/components/PanThumb";
 import { encrypt } from "@/utils/rsaEncrypt";
-import user from "@/api/system/user";
-import store from "@/store";
+import { user } from "@/api/system/user";
+import store from '@/store'
 export default {
   components: { PanThumb },
   props: {
@@ -225,9 +225,7 @@ export default {
           message: "修改成功",
           type: "success",
         });
-        // commit('SET_AVATAR', this.user.avatar)
-        store.dispatch("user/setAvatar", this.user.avatar);
-
+        commit('SET_AVATAR', this.user.avatar)
       });
     },
     handleAvatarSuccess(res, file) {
@@ -254,15 +252,12 @@ export default {
             oldPassword: encrypt(this.passForm.oldPassword.trim()),
             newPassword: encrypt(this.passForm.newPassword),
           };
-          user.updatePassword(data).then((response) => {
+          updatePassword(data).then((response) => {
             this.$alert("修改成功", "提示", {
               confirmButtonText: "重新登陆",
               callback: (action) => {
                 this.$refs[formName].resetFields();
-                // this.$router.push({ path: "/login" });
-                this.$store.dispatch('user/logout')
-                location.reload()
-                // this.$router.push(`/login?redirect=${this.$route.fullPath}`)
+                this.$router.push({ path: "/login" });
               },
             });
           });

@@ -46,20 +46,11 @@ const actions = {
       reject(error)
     })
   },
-  setAvatar({ commit },avatar) {
-    return new Promise(resolve => {
-      commit('SET_AVATAR', avatar)
-      // setToken(token)
-      resolve()
-    }).catch(error => {
-      reject(error)
-    })
-  },
   // user login
   login({ commit }, userInfo) {
     const { username, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password,isAdmin:1 }).then(response => {
+      login({ username: username.trim(), password: password }).then(response => {
         const { data } = response
         commit('SET_TOKEN', data.token)
         setToken(data.token)
@@ -88,7 +79,7 @@ const actions = {
         // }
         // debugger
         const data = response.data.data
-        // console.log("roles: ",data)
+        console.log("roles: ",data)
         if (data.roles && data.roles.length > 0) {
            // 验证返回的roles是否是一个非空数组
           commit('SET_ROLES', data.roles)
@@ -104,7 +95,6 @@ const actions = {
         commit('SET_NAME', data.user.username)
         commit('SET_AVATAR', data.user.avatar)
         commit('SET_BUTTONS', buttonAuthList)
-        commit('SET_GMTCREATE', data.user.gmtCreate)
         // commit('SET_ROLES', roles)
         // commit('SET_NAME', data.name)
         // commit('SET_AVATAR', data.avatar)
