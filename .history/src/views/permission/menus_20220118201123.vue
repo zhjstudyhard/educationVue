@@ -36,23 +36,32 @@
       <el-table-column label="操作">
         <template slot-scope="scope">
           <!-- v-if="node.level == 1 || node.level == 2" v-if="node.level == 3" v-if="node.level == 4"-->
-          <el-button type="text" size="mini" @click="handleAddMenus(scope)"
+          <el-button 
+           v-if="(scope.row.level == 1 || scope.row.level == 2) && hasPerm('menus.add')"
+          type="text" size="mini" @click="handleAddMenus(scope)"
             >添加菜单
           </el-button>
-          <el-button type="text" size="mini" @click="() => getById(scope.row)"
+          <el-button 
+           v-if="(scope.row.level != 4) && hasPerm('menus.update')"
+          type="text" size="mini" @click="() => getById(scope.row)"
             >修改菜单
           </el-button>
-          <el-button type="text" size="mini" @click="handleAddPermission(scope)"
+          <el-button
+          v-if="(scope.row.level == 3) && hasPerm('button.add')" 
+          type="text" size="mini" @click="handleAddPermission(scope)"
             >添加功能
           </el-button>
           <el-button
+            v-if="(scope.row.level == 4) && hasPerm('button.update')" 
             type="text"
             size="mini"
             @click="() => updateFunction(scope.row)"
             >修改功能
           </el-button>
 
-          <el-button type="text" size="mini" @click="() => remove(scope.row)"
+          <el-button 
+          v-if="hasPerm('permission.delete')"
+          type="text" size="mini" @click="() => remove(scope.row)"
             >删除
           </el-button>
         </template>
@@ -214,18 +223,6 @@ export default {
   },
 
   methods: {
-    // 权限类别转换
-    // formatPrivilegeType: function (row, column) {
-    //   if (row.privilegeType === "1") {
-    //     return "目录";
-    //   } else if (row.privilegeType === "2") {
-    //     return "菜单";
-    //   } else if (row.privilegeType === "3") {
-    //     return "按钮";
-    //   } else {
-    //     return "";
-    //   }
-    // },
     //  树形表格过滤
     handleTreeData(treeData, searchValue) {
       if (!treeData || treeData.length === 0) {

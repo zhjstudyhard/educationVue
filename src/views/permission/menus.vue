@@ -223,18 +223,6 @@ export default {
   },
 
   methods: {
-    // 权限类别转换
-    // formatPrivilegeType: function (row, column) {
-    //   if (row.privilegeType === "1") {
-    //     return "目录";
-    //   } else if (row.privilegeType === "2") {
-    //     return "菜单";
-    //   } else if (row.privilegeType === "3") {
-    //     return "按钮";
-    //   } else {
-    //     return "";
-    //   }
-    // },
     //  树形表格过滤
     handleTreeData(treeData, searchValue) {
       if (!treeData || treeData.length === 0) {
