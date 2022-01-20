@@ -339,7 +339,7 @@ export const asyncRoutes = [{
             title: '编辑课程基本信息',
             noCache: true
           },
-          // hidden: true
+          hidden: true
         },
         {
           path: 'chapter/:id',
@@ -349,17 +349,17 @@ export const asyncRoutes = [{
             title: '编辑课程大纲',
             noCache: true
           },
-          // hidden: true
+          hidden: true
         },
         {
           path: 'publish/:id',
           name: 'EduCoursePublishEdit',
-          component: () => import('@/views/course/publish'),
+          component: () => import('@/views/edu/course/publish'),
           meta: {
             title: '发布课程',
             noCache: true
           },
-          // hidden: true
+          hidden: true
         }
       ]
     },

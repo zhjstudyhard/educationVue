@@ -84,7 +84,6 @@
             >
           </router-link>
           <el-button
-            v-if="hasPerm('teacher.delete')"
             type="danger"
             size="mini"
             icon="el-icon-delete"
