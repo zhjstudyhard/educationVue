@@ -61,7 +61,7 @@
     </div>
 
     <!-- 添加和修改章节表单 -->
-    <el-dialog :visible.sync="dialogChapterFormVisible" title="章节设置">
+    <el-dialog :visible.sync="dialogChapterFormVisible" title="添加章节">
       <el-form :model="chapter" label-width="120px">
         <el-form-item label="章节标题">
           <el-input v-model="chapter.title" />
@@ -289,8 +289,7 @@ export default {
       }).then(() => {
         //点击确定，执行then方法
         //调用删除的方法
-        let data = {id:chapterId}
-        chapter.deleteChapter(data).then((response) => {
+        chapter.deleteChapter(chapterId).then((response) => {
           //删除成功
           //提示信息
           this.$message({

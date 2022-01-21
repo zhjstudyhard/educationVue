@@ -91,7 +91,7 @@
 <script>
 //引入调用course.js文件
 import course from "@/api/course/course";
-import dictionary from "@/api/system/dictionary";
+
 export default {
   //写核心代码位置
   // data:{

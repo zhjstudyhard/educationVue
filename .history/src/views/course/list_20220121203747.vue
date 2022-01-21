@@ -14,14 +14,8 @@
           clearable
           placeholder="课程状态"
         >
-          <!-- <el-option value="Normal" label="已发布" />
-          <el-option value="Draft" label="未发布" /> -->
-          <el-option
-            v-for="val in types"
-            :key="val.dictionaryCode"
-            :value="val.dictionaryCode"
-            :label="val.dictionaryValue"
-          />
+          <el-option value="Normal" label="已发布" />
+          <el-option value="Draft" label="未发布" />
         </el-select>
       </el-form-item>
 
@@ -35,7 +29,7 @@
     <el-table :data="list" border fit highlight-current-row>
       <el-table-column label="序号" width="70" align="center">
         <template slot-scope="scope">
-          {{ (currentPage - 1) * pageSize + scope.$index + 1 }}
+          {{ (page - 1) * limit + scope.$index + 1 }}
         </template>
       </el-table-column>
 
@@ -43,8 +37,7 @@
 
       <el-table-column label="课程状态" width="80">
         <template slot-scope="scope">
-          <!-- {{ scope.row.status === "Normal" ? "已发布" : "未发布" }} -->
-          {{ scope.row.statusName }}
+          {{ scope.row.status === "Normal" ? "已发布" : "未发布" }}
         </template>
       </el-table-column>
 
@@ -91,7 +84,7 @@
 <script>
 //引入调用course.js文件
 import course from "@/api/course/course";
-import dictionary from "@/api/system/dictionary";
+
 export default {
   //写核心代码位置
   // data:{
@@ -99,7 +92,6 @@ export default {
   data() {
     //定义变量和初始值
     return {
-      types: {},
       list: null, //查询之后接口返回集合
       currentPage: 1, //当前页
       pageSize: 10, //每页记录数
@@ -111,11 +103,6 @@ export default {
     //页面渲染之前执行，一般调用methods定义的方法
     //调用
     this.getList();
-     let data = { dictionaryType: "PUBLISH_STATUS" };
-     dictionary.queryDictionaryByType(data).then((response) => {
-      // console.log("types: ",response.data.data)
-      this.types = response.data.data;
-    });
   },
   methods: {
     //创建具体的方法，调用course.js定义的方法
@@ -125,7 +112,7 @@ export default {
       this.courseQuery.currentPage = this.page;
       this.courseQuery.pageSize = this.pageSize;
       course
-        .getListCourse(this.courseQuery)
+        .getListCourse(this.page, this.limit, this.courseQuery)
         .then((response) => {
           //请求成功
           //response接口返回的数据

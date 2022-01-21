@@ -289,8 +289,7 @@ export default {
       }).then(() => {
         //点击确定，执行then方法
         //调用删除的方法
-        let data = {id:chapterId}
-        chapter.deleteChapter(data).then((response) => {
+        chapter.deleteChapter(chapterId).then((response) => {
           //删除成功
           //提示信息
           this.$message({

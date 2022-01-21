@@ -63,19 +63,18 @@ export default {
   methods: {
     //根据课程id查询
     getCoursePublishId() {
-      let data = { id: this.courseId };
+      let data = {id:this.courseId}
       course.getPublihCourseInfo(data).then((response) => {
         this.coursePublish = response.data.data;
       });
     },
     previous() {
-      // console.log("previous");
+      console.log("previous");
       this.$router.push({ path: "/course/chapter/" + this.$route.params.id });
     },
 
     publish() {
-      let data = { id: this.courseId };
-      course.publihCourse(data).then((response) => {
+      course.publihCourse(this.courseId).then((response) => {
         //提示
         this.$message({
           type: "success",

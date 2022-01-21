@@ -22,12 +22,12 @@
         </p>
         <p>
           <span
-            >所属分类：{{ coursePublish.subjectParentName }} —
-            {{ coursePublish.subjectName }}</span
+            >所属分类：{{ coursePublish.subjectLevelOne }} —
+            {{ coursePublish.subjectLevelTwo }}</span
           >
         </p>
         <p>课程讲师：{{ coursePublish.teacherName }}</p>
-        <!-- <h3 class="red">￥{{ coursePublish.price }}</h3> -->
+        <h3 class="red">￥{{ coursePublish.price }}</h3>
       </div>
     </div>
 
@@ -63,19 +63,17 @@ export default {
   methods: {
     //根据课程id查询
     getCoursePublishId() {
-      let data = { id: this.courseId };
-      course.getPublihCourseInfo(data).then((response) => {
-        this.coursePublish = response.data.data;
+      course.getPublihCourseInfo(this.courseId).then((response) => {
+        this.coursePublish = response.data.publishCourse;
       });
     },
     previous() {
-      // console.log("previous");
+      console.log("previous");
       this.$router.push({ path: "/course/chapter/" + this.$route.params.id });
     },
 
     publish() {
-      let data = { id: this.courseId };
-      course.publihCourse(data).then((response) => {
+      course.publihCourse(this.courseId).then((response) => {
         //提示
         this.$message({
           type: "success",
