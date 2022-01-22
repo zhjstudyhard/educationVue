@@ -57,17 +57,16 @@
       <el-table-column label="操作" width="600" align="center">
         <template slot-scope="scope">
           <router-link :to="'/course/info/' + scope.row.id">
-            <el-button v-if="hasPerm('course.update')" type="primary" size="mini" icon="el-icon-edit"
+            <el-button type="primary" size="mini" icon="el-icon-edit"
               >编辑课程基本信息</el-button
             >
           </router-link>
           <router-link :to="'/course/chapter/' + scope.row.id">
-            <el-button v-if="hasPerm('chapter.save')" type="primary" size="mini" icon="el-icon-edit"
-              >编辑课程大纲信息</el-button
+            <el-button type="primary" size="mini" icon="el-icon-edit"
+              >编辑课程大纲息</el-button
             >
           </router-link>
           <el-button
-            v-if="hasPerm('course.delete')"
             type="danger"
             size="mini"
             icon="el-icon-delete"
@@ -112,8 +111,9 @@ export default {
     //页面渲染之前执行，一般调用methods定义的方法
     //调用
     this.getList();
-    let data = { dictionaryType: "PUBLISH_STATUS" };
-    dictionary.queryDictionaryByType(data).then((response) => {
+     let data = { dictionaryType: "PUBLISH_STATUS" };
+     dictionary.queryDictionaryByType(data).then((response) => {
+      // console.log("types: ",response.data.data)
       this.types = response.data.data;
     });
   },
@@ -124,12 +124,14 @@ export default {
       this.page = page;
       this.courseQuery.currentPage = this.page;
       this.courseQuery.pageSize = this.pageSize;
-      course.getListCourse(this.courseQuery).then((response) => {
-        //请求成功
-        //response接口返回的数据
-        this.list = response.data.data.data;
-        this.total = response.data.data.total;
-      });
+      course
+        .getListCourse(this.courseQuery)
+        .then((response) => {
+          //请求成功
+          //response接口返回的数据
+          this.list = response.data.data.data;
+          this.total = response.data.data.total;
+        });
     },
     removeDataById(id) {
       this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
@@ -137,13 +139,12 @@ export default {
         cancelButtonText: "取消",
         type: "warning",
       }).then(() => {
-        let data = { id: id };
-        course.removeCourseById(data).then((response) => {
+        course.removeCourseById(id).then((response) => {
           this.$message({
             message: "删除成功",
             type: "success",
           });
-          this.getList();
+          this.getList()
         });
       });
     },

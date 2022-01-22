@@ -57,17 +57,16 @@
       <el-table-column label="操作" width="600" align="center">
         <template slot-scope="scope">
           <router-link :to="'/course/info/' + scope.row.id">
-            <el-button v-if="hasPerm('course.update')" type="primary" size="mini" icon="el-icon-edit"
+            <el-button type="primary" size="mini" icon="el-icon-edit"
               >编辑课程基本信息</el-button
             >
           </router-link>
           <router-link :to="'/course/chapter/' + scope.row.id">
-            <el-button v-if="hasPerm('chapter.save')" type="primary" size="mini" icon="el-icon-edit"
+            <el-button type="primary" size="mini" icon="el-icon-edit"
               >编辑课程大纲信息</el-button
             >
           </router-link>
           <el-button
-            v-if="hasPerm('course.delete')"
             type="danger"
             size="mini"
             icon="el-icon-delete"

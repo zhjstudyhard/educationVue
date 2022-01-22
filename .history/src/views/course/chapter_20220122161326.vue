@@ -14,7 +14,7 @@
     </el-steps>
 
     <el-button
-      v-if="hasPerm('chapter.add')"
+      v-if="hasPerm('video.save')"
       type="text"
       @click="openChapterDialog()"
       >添加章节</el-button
@@ -35,14 +35,14 @@
               >添加小节</el-button
             >
             <el-button
-              v-if="hasPerm('chapter.update')"
+              v-if="hasPerm('video.update')"
               style=""
               type="text"
               @click="openEditChatper(chapter.id)"
               >编辑</el-button
             >
             <el-button
-              v-if="hasPerm('chapter.delete')"
+              v-if="hasPerm('video.delete')"
               type="text"
               @click="removeChapter(chapter.id)"
               >删除</el-button

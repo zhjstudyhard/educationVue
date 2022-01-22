@@ -13,12 +13,7 @@
       <el-step title="最终发布" />
     </el-steps>
 
-    <el-button
-      v-if="hasPerm('chapter.add')"
-      type="text"
-      @click="openChapterDialog()"
-      >添加章节</el-button
-    >
+    <el-button type="text" @click="openChapterDialog()">添加章节</el-button>
 
     <!-- 章节 -->
     <ul class="chanpterList">
@@ -27,24 +22,19 @@
           {{ chapter.title }}
 
           <span class="acts">
-            <el-button
+            <el-button 
               v-if="hasPerm('video.save')"
-              style=""
-              type="text"
-              @click="openVideo(chapter.id)"
+              style="" type="text" @click="openVideo(chapter.id)"
               >添加小节</el-button
             >
-            <el-button
-              v-if="hasPerm('chapter.update')"
-              style=""
-              type="text"
-              @click="openEditChatper(chapter.id)"
+            <el-button 
+              v-if="hasPerm('video.update')"
+              style="" type="text" @click="openEditChatper(chapter.id)"
               >编辑</el-button
             >
-            <el-button
-              v-if="hasPerm('chapter.delete')"
-              type="text"
-              @click="removeChapter(chapter.id)"
+            <el-button 
+              v-if="hasPerm('video.delete')"
+              type="text" @click="removeChapter(chapter.id)"
               >删除</el-button
             >
           </span>
@@ -57,17 +47,10 @@
               {{ video.title }}
 
               <span class="acts">
-                <el-button
-                  v-if="hasPerm('video.update')"
-                  style=""
-                  type="text"
-                  @click="openEditVideo(video.id)"
+                <el-button style="" type="text" @click="openEditVideo(video.id)"
                   >编辑</el-button
                 >
-                <el-button
-                  v-if="hasPerm('video.delete')"
-                  type="text"
-                  @click="removeVideo(video.id)"
+                <el-button type="text" @click="removeVideo(video.id)"
                   >删除</el-button
                 >
               </span>

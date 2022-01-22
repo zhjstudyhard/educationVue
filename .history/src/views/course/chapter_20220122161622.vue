@@ -35,14 +35,14 @@
               >添加小节</el-button
             >
             <el-button
-              v-if="hasPerm('chapter.update')"
+              v-if="hasPerm('video.update')"
               style=""
               type="text"
               @click="openEditChatper(chapter.id)"
               >编辑</el-button
             >
             <el-button
-              v-if="hasPerm('chapter.delete')"
+              v-if="hasPerm('video.delete')"
               type="text"
               @click="removeChapter(chapter.id)"
               >删除</el-button
@@ -58,14 +58,14 @@
 
               <span class="acts">
                 <el-button
-                  v-if="hasPerm('video.update')"
+                  v-if="hasPerm('chapter.update')"
                   style=""
                   type="text"
                   @click="openEditVideo(video.id)"
                   >编辑</el-button
                 >
                 <el-button
-                  v-if="hasPerm('video.delete')"
+                  v-if="hasPerm('chapter.delete')"
                   type="text"
                   @click="removeVideo(video.id)"
                   >删除</el-button
