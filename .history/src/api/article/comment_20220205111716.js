@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-12-27 20:41:25
- * @LastEditTime: 2022-02-05 11:20:29
+ * @LastEditTime: 2022-02-05 11:17:16
  * @LastEditors: Please set LastEditors
  * @Description: 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  * @FilePath: \education-vue-front\src\api\article\comment.js
@@ -30,7 +30,7 @@ export default {
   },
   queryCourseAllComment(data) {
     return request({
-      url: '/api/course/queryCourseAllComment',
+      url: '/api/comment/queryCourseAllComment',
       method: 'post',
       data: data
     })

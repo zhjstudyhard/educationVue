@@ -50,24 +50,13 @@
           ></el-avatar>
         </template>
       </el-table-column>
-      <!-- <el-table-column
-        label="类型"
-        prop="email"
-        show-overflow-tooltip
-      ></el-table-column> -->
-      <!-- <el-table-column
-        label="网站"
-        prop="website"
-        show-overflow-tooltip
-      ></el-table-column> -->
-      <!-- <el-table-column label="ip" prop="ip" width="130"></el-table-column> -->
       <el-table-column
         label="评论内容"
         prop="content"
         show-overflow-tooltip
       ></el-table-column>
       <!-- <el-table-column label="QQ" prop="qq" width="115"></el-table-column> -->
-      <el-table-column label="文章标题" show-overflow-tooltip>
+      <el-table-column label="课程标题" show-overflow-tooltip>
         <template v-slot="scope">
           <el-link type="success" :href="'#'">{{ scope.row.title }}</el-link>
         </template>
@@ -75,25 +64,9 @@
       <el-table-column label="发表时间" width="170">
         <template v-slot="scope">{{ scope.row.gmtCreate }}</template>
       </el-table-column>
-      <!-- <el-table-column label="是否公开" width="80">
-        <template v-slot="scope">
-          <el-switch
-            v-model="scope.row.isPublished"
-            @change="commentPublishedChanged(scope.row.id)"
-          ></el-switch>
-        </template>
-      </el-table-column> -->
       <el-table-column label="操作" width="200">
         <template v-slot="scope">
-          <!-- <el-button
-            type="primary"
-            icon="el-icon-edit"
-            size="mini"
-            @click="showEditDialog(scope.row)"
-            >编辑</el-button
-          > --> 
           <el-button
-            v-if="hasPerm('comment.del')"
             type="danger"
             icon="el-icon-delete"
             size="mini"

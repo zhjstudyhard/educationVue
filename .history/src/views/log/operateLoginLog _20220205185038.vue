@@ -134,7 +134,7 @@ export default {
       total: 0,
       logList: [],
       logTypeList: [],
-      // isLogin: 1,
+      isLogin: 1,
     };
   },
   methods: {
@@ -155,9 +155,9 @@ export default {
         this.total = response.data.data.total;
       });
     },
-    //
+    //获取所有文章列表
     queryLogType() {
-      let data = {}
+      let data = {isLogin:this.isLogin}
       operateLog.queryLogType(data).then((response) => {
         // console.log("logTypeList: ", response.data);
         this.logTypeList = response.data.data;

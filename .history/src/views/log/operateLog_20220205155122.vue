@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--搜索-->
-    <el-row>
+    <!-- <el-row>
       <el-col :span="6">
         <el-select
           v-model="queryInfo.articleId"
@@ -20,7 +20,7 @@
           ></el-option>
         </el-select>
       </el-col>
-    </el-row>
+    </el-row> -->
 
     <el-table
       :data="commentList"
@@ -243,27 +243,12 @@ export default {
       this.getCommentList();
     },
 
-    // //切换评论公开状态
-    // commentPublishedChanged(id) {
-    //   const _this = this;
-    //   this.$axios.get("/comment/publish/" + id).then((res) => {
-    //     _this.$alert("操作成功", "提示", {
-    //       confirmButtonText: "确定",
-    //       callback: (action) => {
-    //         _this.page(_this.getCommentList());
-    //         //_this.$router.push("/blogList")
-    //       },
-    //     });
-    //   });
-    // },
+   
 
     showEditDialog(row) {
       this.editDialogVisible = true;
       this.editForm = row;
     },
-    // editDialogClosed() {
-    //   this.editDialogVisible = false;
-    // },
     deleteCommentById(id) {
       let data = { id: id };
 
@@ -285,52 +270,12 @@ export default {
           console.error(err);
         });
 
-      // this.$axios.get("/comment/delete/" + id).then((res) => {
-      //   this.$alert("操作成功", "提示", {
-      //     confirmButtonText: "确定",
-      //     callback: (action) => {
-      //       this.getCommentList();
-      //       //_this.$router.push("/blogList")
-      //     },
-      //   });
-      // });
     },
-    // editComment() {
-    //   const _this = this;
-    //   this.$axios.post("/comment/update", this.editForm).then((res) => {
-    //     _this.$alert("操作成功", "提示", {
-    //       confirmButtonText: "确定",
-    //       callback: (action) => {
-    //         _this.getCommentList();
-    //         _this.editDialogVisible = false;
-    //         //_this.$router.push("/blogList")
-    //       },
-    //     });
-    //   });
-    // },
+
     search() {
       this.queryInfo.currentPage = 1;
       this.getCommentList();
-      // const _this = this;
-      // this.$axios
-      //   .get(
-      //     "/comment/detail?blogId=" +
-      //       this.queryInfo.blogId +
-      //       "&currentPage=" +
-      //       this.queryInfo.pageNum +
-      //       "&pageSize=" +
-      //       this.queryInfo.pageSize,
-      //     {
-      //       headers: {
-      //         Authorization: localStorage.getItem("token"),
-      //       },
-      //     }
-      //   )
-      //   .then((res) => {
-      //     _this.commentList = res.data.data.records;
-      //     _this.total = res.data.data.total;
-      //     //console.log(_this.blogList)
-      //   });
+    
     },
   },
   created() {

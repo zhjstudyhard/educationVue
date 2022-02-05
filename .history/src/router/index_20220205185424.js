@@ -183,7 +183,7 @@ export const asyncRoutes = [{
       },
       {
         path: 'operateLoginLog',
-        component: () => import('@/views/log/operateLoginLog'),
+        component: () => import('@/views/log/operateLoginLog.vue'),
         name: '登录日志',
         meta: {
           title: '登录日志',

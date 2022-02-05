@@ -1,46 +1,26 @@
 <template>
   <div>
-    <!--查询表单-->
-    <el-form :inline="true" class="demo-form-inline">
-      <el-form-item>
-        <el-input v-model="queryInfo.userName" placeholder="操作人" />
-      </el-form-item>
-
-      <el-form-item>
-        <el-select v-model="queryInfo.logType" clearable placeholder="操作类型">
+    <!--搜索-->
+    <!-- <el-row>
+      <el-col :span="6">
+        <el-select
+          v-model="queryInfo.articleId"
+          placeholder="请选择页面"
+          :filterable="true"
+          :clearable="true"
+          @change="search"
+          size="small"
+          style="min-width: 400px"
+        >
           <el-option
-            v-for="(value, key) in logTypeList"
-            :key="key"
-            :value="key"
-            :label="value"
-          />
+            :label="item.title"
+            :value="item.id"
+            v-for="item in articleList"
+            :key="item.id"
+          ></el-option>
         </el-select>
-      </el-form-item>
-
-      <el-form-item label="操作时间">
-        <el-date-picker
-          v-model="queryInfo.queryStartTime"
-          type="datetime"
-          placeholder="选择开始时间"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          default-time="00:00:00"
-        />
-      </el-form-item>
-      <el-form-item>
-        <el-date-picker
-          v-model="queryInfo.queryEndTime"
-          type="datetime"
-          placeholder="选择截止时间"
-          value-format="yyyy-MM-dd HH:mm:ss"
-          default-time="23:59:59"
-        />
-      </el-form-item>
-
-      <el-button type="primary" icon="el-icon-search" @click="getList()"
-        >查询</el-button
-      >
-      <el-button type="default" @click="resetData()">清空</el-button>
-    </el-form>
+      </el-col>
+    </el-row> -->
 
     <el-table
       :data="logList"
@@ -53,21 +33,22 @@
           {{ scope.row.model }}
         </template>
       </el-table-column>
+      <!-- <el-table-column label="头像" width="80">
+        <template v-slot="scope">
+          <el-avatar
+            shape="square"
+            :size="60"
+            fit="contain"
+            :src="scope.row.avatar"
+          ></el-avatar>
+        </template>
+      </el-table-column>
+      -->
       <el-table-column label="请求url" width="300">
         <template v-slot="scope">
           {{ scope.row.url }}
         </template></el-table-column
       >
-      <el-table-column label="方法名称" width="100">
-        <template v-slot="scope">
-          {{ scope.row.methodName }}
-        </template>
-      </el-table-column>
-      <el-table-column label="请求参数" show-overflow-tooltip>
-        <template v-slot="scope">
-          {{ scope.row.params }}
-        </template>
-      </el-table-column>
       <!-- <el-table-column label="QQ" prop="qq" width="115"></el-table-column> -->
       <el-table-column label="请求类型" width="115">
         <template v-slot="scope">
@@ -82,32 +63,36 @@
       <el-table-column label="操作时间" width="170">
         <template v-slot="scope">{{ scope.row.gmtCreate }}</template>
       </el-table-column>
-      <el-table-column label="操作人" width="100">
+      <el-table-column label="操作人" width="170">
         <template v-slot="scope">{{ scope.row.userName }}</template>
       </el-table-column>
       <el-table-column label="接口调用时间" width="170">
-        <template v-slot="scope">
-          {{ scope.row.resultTime }}
-          <span style="color: blue">ms</span>
-        </template>
+        <template v-slot="scope">{{ scope.row.resultTime }}</template>
+        <el-button type="primary" circle>ms</el-button>
       </el-table-column>
       <el-table-column label="操作结果" width="170">
-        <template v-slot="scope">
-          <el-button v-if="scope.row.result == 1" type="primary" round>{{
-            scope.row.resultName
-          }}</el-button>
-          <el-button v-if="scope.row.result == 0" type="warning" round>{{
-            scope.row.resultName
-          }}</el-button>
-        </template>
+        <template v-slot="scope">{{ scope.row.resultName }}</template>
       </el-table-column>
+
+      <!-- <el-table-column label="操作" width="200">
+        <template v-slot="scope">
+          <el-button
+            v-if="hasPerm('comment.del')"
+            type="danger"
+            icon="el-icon-delete"
+            size="mini"
+            @click="deleteCommentById(scope.row.id)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column> -->
     </el-table>
 
     <!--分页-->
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="queryInfo.currentPage"
+      :current-page="queryInfo.pageNum"
       :page-sizes="[10, 20, 30, 50]"
       :page-size="queryInfo.pageSize"
       :total="total"
@@ -128,61 +113,80 @@ export default {
     return {
       pageId: null,
       queryInfo: {
+        // isAdmin: 1,
+        // page: null,
+        // articleId: null,
         currentPage: 1,
         pageSize: 10,
       },
       total: 0,
       logList: [],
-      logTypeList: [],
-      // isLogin: 1,
+      // articleList: [],
     };
   },
   methods: {
-    getList() {
-      this.currentPage = 1;
-      this.getLogList();
-    },
-    resetData() {
-      this.queryInfo = {};
-      this.currentPage = 1;
-      this.getLogList();
-    },
     //分页获取评论列表
     getLogList() {
       operateLog.queryPageLog(this.queryInfo).then((response) => {
-        // console.log("logList: ", response.data.data);
+        console.log("logList: ", response.data.data);
         this.logList = response.data.data.data;
         this.total = response.data.data.total;
       });
     },
-    //
-    queryLogType() {
-      let data = {}
-      operateLog.queryLogType(data).then((response) => {
-        // console.log("logTypeList: ", response.data);
-        this.logTypeList = response.data.data;
-      });
-    },
+    //获取所有文章列表
+    // getArticleList() {
+    //   let data = { isAdmin: this.queryInfo.isAdmin };
+    //   article.getAllArticle(data).then((response) => {
+    //     // console.log("comment: ", response.data.data);
+    //     this.articleList = response.data.data.data;
+    //   });
+
+    // },
     //监听页码改变事件
     handleCurrentChange(newPage) {
       this.queryInfo.currentPage = newPage;
-      this.getLogList();
+      this.getCommentList();
     },
     //监听 pageSize 改变事件
     handleSizeChange(newPageSize) {
       this.queryInfo.pageSize = newPageSize;
-      this.getLogList();
+      this.getCommentList();
     },
 
+    showEditDialog(row) {
+      this.editDialogVisible = true;
+      this.editForm = row;
+    },
+    deleteCommentById(id) {
+      let data = { id: id };
+
+      this.$confirm("确认删除当前评论?", "Warning", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then((response) => {
+          comment.delComment(data).then((response) => {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getCommentList();
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
 
     search() {
       this.queryInfo.currentPage = 1;
-      this.getLogList();
+      this.getCommentList();
     },
   },
   created() {
     this.getLogList();
-    this.queryLogType();
+    // this.getArticleList();
   },
 };
 </script>

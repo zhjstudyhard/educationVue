@@ -50,11 +50,11 @@
           ></el-avatar>
         </template>
       </el-table-column>
-      <!-- <el-table-column
-        label="类型"
+      <el-table-column
+        label="邮箱"
         prop="email"
         show-overflow-tooltip
-      ></el-table-column> -->
+      ></el-table-column>
       <!-- <el-table-column
         label="网站"
         prop="website"
@@ -67,9 +67,12 @@
         show-overflow-tooltip
       ></el-table-column>
       <!-- <el-table-column label="QQ" prop="qq" width="115"></el-table-column> -->
-      <el-table-column label="文章标题" show-overflow-tooltip>
+      <el-table-column label="博客标题" show-overflow-tooltip>
         <template v-slot="scope">
           <el-link type="success" :href="'#'">{{ scope.row.title }}</el-link>
+          <!-- <el-link type="success" :href="`/article/${scope.row.id}`">{{
+            scope.row.title
+          }}</el-link> -->
         </template>
       </el-table-column>
       <el-table-column label="发表时间" width="170">
@@ -91,9 +94,8 @@
             size="mini"
             @click="showEditDialog(scope.row)"
             >编辑</el-button
-          > --> 
+          > -->
           <el-button
-            v-if="hasPerm('comment.del')"
             type="danger"
             icon="el-icon-delete"
             size="mini"

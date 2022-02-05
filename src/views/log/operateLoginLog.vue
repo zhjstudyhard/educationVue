@@ -134,7 +134,7 @@ export default {
       total: 0,
       logList: [],
       logTypeList: [],
-      // isLogin: 1,
+      isLogin: 1,
     };
   },
   methods: {
@@ -149,15 +149,16 @@ export default {
     },
     //分页获取评论列表
     getLogList() {
+      this.queryInfo.isLogin = 1;
       operateLog.queryPageLog(this.queryInfo).then((response) => {
         // console.log("logList: ", response.data.data);
         this.logList = response.data.data.data;
         this.total = response.data.data.total;
       });
     },
-    //
+    //获取所有文章列表
     queryLogType() {
-      let data = {}
+      let data = { isLogin: this.isLogin };
       operateLog.queryLogType(data).then((response) => {
         // console.log("logTypeList: ", response.data);
         this.logTypeList = response.data.data;
@@ -173,7 +174,6 @@ export default {
       this.queryInfo.pageSize = newPageSize;
       this.getLogList();
     },
-
 
     search() {
       this.queryInfo.currentPage = 1;

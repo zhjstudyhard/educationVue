@@ -164,6 +164,14 @@ export const asyncRoutes = [{
           title: '操作日志',
         }
       },
+      {
+        path: 'operateLoginLog ',
+        component: () => import('@/views/log/operateLoginLog'),
+        name: '登录日志',
+        meta: {
+          title: '登录日志',
+        }
+      }
     ],
   },
   {
@@ -182,8 +190,8 @@ export const asyncRoutes = [{
         }
       },
       {
-        path: 'operateLoginLog',
-        component: () => import('@/views/log/operateLoginLog'),
+        path: 'LoginList',
+        component: () => import('@/views/log/operateLog'),
         name: '登录日志',
         meta: {
           title: '登录日志',

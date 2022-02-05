@@ -91,9 +91,8 @@
             size="mini"
             @click="showEditDialog(scope.row)"
             >编辑</el-button
-          > --> 
+          > -->
           <el-button
-            v-if="hasPerm('comment.del')"
             type="danger"
             icon="el-icon-delete"
             size="mini"

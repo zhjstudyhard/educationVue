@@ -3,11 +3,15 @@
     <!--查询表单-->
     <el-form :inline="true" class="demo-form-inline">
       <el-form-item>
-        <el-input v-model="queryInfo.userName" placeholder="操作人" />
+        <el-input v-model="queryInfo.username" placeholder="操作人" />
       </el-form-item>
 
       <el-form-item>
-        <el-select v-model="queryInfo.logType" clearable placeholder="操作类型">
+        <el-select
+          v-model="queryInfo.logType"
+          clearable
+          placeholder="操作类型"
+        >
           <el-option
             v-for="(value, key) in logTypeList"
             :key="key"
@@ -17,9 +21,9 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="操作时间">
+      <!-- <el-form-item label="操作时间">
         <el-date-picker
-          v-model="queryInfo.queryStartTime"
+          v-model="teacherQuery.queryStartTime"
           type="datetime"
           placeholder="选择开始时间"
           value-format="yyyy-MM-dd HH:mm:ss"
@@ -28,13 +32,13 @@
       </el-form-item>
       <el-form-item>
         <el-date-picker
-          v-model="queryInfo.queryEndTime"
+          v-model="teacherQuery.queryEndTime"
           type="datetime"
           placeholder="选择截止时间"
           value-format="yyyy-MM-dd HH:mm:ss"
           default-time="23:59:59"
         />
-      </el-form-item>
+      </el-form-item> -->
 
       <el-button type="primary" icon="el-icon-search" @click="getList()"
         >查询</el-button
@@ -107,7 +111,7 @@
     <el-pagination
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
-      :current-page="queryInfo.currentPage"
+      :current-page="queryInfo.pageNum"
       :page-sizes="[10, 20, 30, 50]"
       :page-size="queryInfo.pageSize"
       :total="total"
@@ -134,18 +138,12 @@ export default {
       total: 0,
       logList: [],
       logTypeList: [],
-      // isLogin: 1,
     };
   },
   methods: {
-    getList() {
-      this.currentPage = 1;
-      this.getLogList();
-    },
-    resetData() {
-      this.queryInfo = {};
-      this.currentPage = 1;
-      this.getLogList();
+    getList(){
+      this.currentPage = 1
+      getLogList();
     },
     //分页获取评论列表
     getLogList() {
@@ -155,29 +153,54 @@ export default {
         this.total = response.data.data.total;
       });
     },
-    //
+    //获取所有文章列表
     queryLogType() {
-      let data = {}
-      operateLog.queryLogType(data).then((response) => {
+      operateLog.queryLogType().then((response) => {
         // console.log("logTypeList: ", response.data);
         this.logTypeList = response.data.data;
       });
+
     },
     //监听页码改变事件
     handleCurrentChange(newPage) {
       this.queryInfo.currentPage = newPage;
-      this.getLogList();
+      this.getCommentList();
     },
     //监听 pageSize 改变事件
     handleSizeChange(newPageSize) {
       this.queryInfo.pageSize = newPageSize;
-      this.getLogList();
+      this.getCommentList();
     },
 
+    showEditDialog(row) {
+      this.editDialogVisible = true;
+      this.editForm = row;
+    },
+    deleteCommentById(id) {
+      let data = { id: id };
+
+      this.$confirm("确认删除当前评论?", "Warning", {
+        confirmButtonText: "确认",
+        cancelButtonText: "取消",
+        type: "warning",
+      })
+        .then((response) => {
+          comment.delComment(data).then((response) => {
+            this.$message({
+              type: "success",
+              message: "删除成功!",
+            });
+            this.getCommentList();
+          });
+        })
+        .catch((err) => {
+          console.error(err);
+        });
+    },
 
     search() {
       this.queryInfo.currentPage = 1;
-      this.getLogList();
+      this.getCommentList();
     },
   },
   created() {

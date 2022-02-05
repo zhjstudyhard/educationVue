@@ -134,7 +134,7 @@ export default {
       total: 0,
       logList: [],
       logTypeList: [],
-      // isLogin: 1,
+      isLogin: 1,
     };
   },
   methods: {
@@ -155,9 +155,9 @@ export default {
         this.total = response.data.data.total;
       });
     },
-    //
+    //获取所有文章列表
     queryLogType() {
-      let data = {}
+      let data = {isLogin:this.isLogin}
       operateLog.queryLogType(data).then((response) => {
         // console.log("logTypeList: ", response.data);
         this.logTypeList = response.data.data;
@@ -174,6 +174,31 @@ export default {
       this.getLogList();
     },
 
+    // showEditDialog(row) {
+    //   this.editDialogVisible = true;
+    //   this.editForm = row;
+    // },
+    // deleteCommentById(id) {
+    //   let data = { id: id };
+
+    //   this.$confirm("确认删除当前评论?", "Warning", {
+    //     confirmButtonText: "确认",
+    //     cancelButtonText: "取消",
+    //     type: "warning",
+    //   })
+    //     .then((response) => {
+    //       comment.delComment(data).then((response) => {
+    //         this.$message({
+    //           type: "success",
+    //           message: "删除成功!",
+    //         });
+    //         this.getCommentList();
+    //       });
+    //     })
+    //     .catch((err) => {
+    //       console.error(err);
+    //     });
+    // },
 
     search() {
       this.queryInfo.currentPage = 1;

@@ -1,7 +1,7 @@
 <template>
   <div>
     <!--搜索-->
-    <el-row>
+    <!-- <el-row>
       <el-col :span="6">
         <el-select
           v-model="queryInfo.articleId"
@@ -20,7 +20,7 @@
           ></el-option>
         </el-select>
       </el-col>
-    </el-row>
+    </el-row> -->
 
     <el-table
       :data="commentList"
@@ -28,19 +28,12 @@
       :tree-props="{ children: 'replyComments' }"
     >
       <el-table-column label="序号" type="index" width="50"></el-table-column>
-      <el-table-column label="昵称" prop="username">
+      <el-table-column label="操作描述" prop="username">
         <template v-slot="scope">
           {{ scope.row.username }}
-          <el-tag
-            v-if="scope.row.articleUser === 1"
-            size="mini"
-            effect="dark"
-            style="margin-left: 5px"
-            >我</el-tag
-          >
         </template>
       </el-table-column>
-      <el-table-column label="头像" width="80">
+      <!-- <el-table-column label="头像" width="80">
         <template v-slot="scope">
           <el-avatar
             shape="square"
@@ -50,48 +43,26 @@
           ></el-avatar>
         </template>
       </el-table-column>
-      <!-- <el-table-column
-        label="类型"
-        prop="email"
-        show-overflow-tooltip
-      ></el-table-column> -->
-      <!-- <el-table-column
-        label="网站"
-        prop="website"
-        show-overflow-tooltip
-      ></el-table-column> -->
-      <!-- <el-table-column label="ip" prop="ip" width="130"></el-table-column> -->
       <el-table-column
-        label="评论内容"
+        label="请求url"
         prop="content"
         show-overflow-tooltip
-      ></el-table-column>
+      ></el-table-column> -->
       <!-- <el-table-column label="QQ" prop="qq" width="115"></el-table-column> -->
-      <el-table-column label="文章标题" show-overflow-tooltip>
+      <el-table-column label="请求类型" show-overflow-tooltip>
         <template v-slot="scope">
-          <el-link type="success" :href="'#'">{{ scope.row.title }}</el-link>
+          {{ scope.row.title }}
         </template>
       </el-table-column>
-      <el-table-column label="发表时间" width="170">
+      <el-table-column label="操作时间" width="170">
         <template v-slot="scope">{{ scope.row.gmtCreate }}</template>
       </el-table-column>
-      <!-- <el-table-column label="是否公开" width="80">
-        <template v-slot="scope">
-          <el-switch
-            v-model="scope.row.isPublished"
-            @change="commentPublishedChanged(scope.row.id)"
-          ></el-switch>
-        </template>
-      </el-table-column> -->
+       <el-table-column label="操作人" width="170">
+        <template v-slot="scope">{{ scope.row.gmtCreate }}</template>
+      </el-table-column>
+      
       <el-table-column label="操作" width="200">
         <template v-slot="scope">
-          <!-- <el-button
-            type="primary"
-            icon="el-icon-edit"
-            size="mini"
-            @click="showEditDialog(scope.row)"
-            >编辑</el-button
-          > --> 
           <el-button
             v-if="hasPerm('comment.del')"
             type="danger"
@@ -117,52 +88,6 @@
     >
     </el-pagination>
 
-    <!--编辑评论对话框-->
-    <!-- <el-dialog
-      title="编辑评论"
-      width="50%"
-      :visible.sync="editDialogVisible"
-      :close-on-click-modal="false"
-      @close="editDialogClosed"
-    > -->
-    <!--内容主体-->
-    <!-- <el-form
-        :model="editForm"
-        :rules="formRules"
-        ref="editFormRef"
-        label-width="80px"
-      >
-        <el-form-item label="昵称" prop="nickname">
-          <el-input v-model="editForm.nickname"></el-input>
-        </el-form-item>
-        <el-form-item label="头像" prop="avatar">
-          <el-input v-model="editForm.avatar"></el-input>
-        </el-form-item>
-        <el-form-item label="邮箱" prop="email">
-          <el-input v-model="editForm.email"></el-input>
-        </el-form-item>
-        <el-form-item label="网站" prop="website">
-          <el-input v-model="editForm.website"></el-input>
-        </el-form-item>
-        <el-form-item label="ip" prop="ip">
-          <el-input v-model="editForm.ip"></el-input>
-        </el-form-item>
-        <el-form-item label="评论内容" prop="content">
-          <el-input
-            v-model="editForm.content"
-            type="textarea"
-            maxlength="255"
-            :rows="5"
-            show-word-limit
-          ></el-input>
-        </el-form-item>
-      </el-form> -->
-    <!--底部-->
-    <!-- <span slot="footer">
-        <el-button @click="editDialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="editComment">确 定</el-button>
-      </span>
-    </el-dialog> -->
   </div>
 </template>
 
@@ -243,27 +168,12 @@ export default {
       this.getCommentList();
     },
 
-    // //切换评论公开状态
-    // commentPublishedChanged(id) {
-    //   const _this = this;
-    //   this.$axios.get("/comment/publish/" + id).then((res) => {
-    //     _this.$alert("操作成功", "提示", {
-    //       confirmButtonText: "确定",
-    //       callback: (action) => {
-    //         _this.page(_this.getCommentList());
-    //         //_this.$router.push("/blogList")
-    //       },
-    //     });
-    //   });
-    // },
+   
 
     showEditDialog(row) {
       this.editDialogVisible = true;
       this.editForm = row;
     },
-    // editDialogClosed() {
-    //   this.editDialogVisible = false;
-    // },
     deleteCommentById(id) {
       let data = { id: id };
 
@@ -285,52 +195,12 @@ export default {
           console.error(err);
         });
 
-      // this.$axios.get("/comment/delete/" + id).then((res) => {
-      //   this.$alert("操作成功", "提示", {
-      //     confirmButtonText: "确定",
-      //     callback: (action) => {
-      //       this.getCommentList();
-      //       //_this.$router.push("/blogList")
-      //     },
-      //   });
-      // });
     },
-    // editComment() {
-    //   const _this = this;
-    //   this.$axios.post("/comment/update", this.editForm).then((res) => {
-    //     _this.$alert("操作成功", "提示", {
-    //       confirmButtonText: "确定",
-    //       callback: (action) => {
-    //         _this.getCommentList();
-    //         _this.editDialogVisible = false;
-    //         //_this.$router.push("/blogList")
-    //       },
-    //     });
-    //   });
-    // },
+
     search() {
       this.queryInfo.currentPage = 1;
       this.getCommentList();
-      // const _this = this;
-      // this.$axios
-      //   .get(
-      //     "/comment/detail?blogId=" +
-      //       this.queryInfo.blogId +
-      //       "&currentPage=" +
-      //       this.queryInfo.pageNum +
-      //       "&pageSize=" +
-      //       this.queryInfo.pageSize,
-      //     {
-      //       headers: {
-      //         Authorization: localStorage.getItem("token"),
-      //       },
-      //     }
-      //   )
-      //   .then((res) => {
-      //     _this.commentList = res.data.data.records;
-      //     _this.total = res.data.data.total;
-      //     //console.log(_this.blogList)
-      //   });
+    
     },
   },
   created() {
